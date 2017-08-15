@@ -11,30 +11,56 @@ import {
     View,
     Button,
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import {StackNavigator} from 'react-navigation';
+import {TabNavigator} from "react-navigation";
 
-class HomeScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Welcome',
-    };
+class RecentChatsScreen extends React.Component {
     render() {
-        const { navigate } = this.props.navigation;
         return (
             <View>
-                <Text>Hello, Chat App!</Text>
+                <Text>List of recent chats</Text>
                 <Button
-                    onPress={() => navigate('Chat', { user: 'Lucy' })}
-                    title="Chat with Lucy"
+                    onPress={() => this.props.navigation.navigate('Chat', {user: 'Lucy'})}
+                    title="Chat with Lucy!"
                 />
             </View>
         );
     }
 }
 
+class AllContactsScreen extends React.Component {
+    //  可以设置tab标题项
+    // static navigationOptions = {
+    //     title: 'Chat with jane',
+    // };
+    render() {
+        return (
+            <View>
+                <Text>List of all contacts</Text>
+                <Button
+                    onPress={() => this.props.navigation.navigate('jane', {user: 'jane'})}
+                    title="Chat with jane!"
+                />
+            </View>
+        );
+    }
+}
+
+const MainScreenNavigator = TabNavigator({
+    Recent: {screen: RecentChatsScreen},
+    All: {screen: AllContactsScreen},
+});
+
+MainScreenNavigator.navigationOptions = {
+    // 设置主标题
+    title: 'My Chats',
+};
+
 class ChatScreen extends React.Component {
     static navigationOptions = {
         title: 'Chat with Lucy',
     };
+
     render() {
         return (
             <View>
@@ -44,9 +70,23 @@ class ChatScreen extends React.Component {
     }
 }
 
+class Chat1Screen extends React.Component {
+    static navigationOptions = {
+        title: 'Chat with jane',
+    };
+
+    render() {
+        return (
+            <View>
+                <Text>Chat with jane</Text>
+            </View>
+        );
+    }
+}
 const SimpleApp = StackNavigator({
-    Home: { screen: HomeScreen },
-    Chat: { screen: ChatScreen },
+    Home: {screen: MainScreenNavigator},
+    Chat: {screen: ChatScreen},
+    jane: {screen: Chat1Screen},
 });
 
 AppRegistry.registerComponent('ReactNavigationDemo', () => SimpleApp);
