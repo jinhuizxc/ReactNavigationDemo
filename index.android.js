@@ -57,16 +57,29 @@ MainScreenNavigator.navigationOptions = {
 };
 
 class ChatScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Chat with Lucy',
-    };
+    // 设置头标题
+    static navigationOptions = ({ navigation }) => {
+        const {state, setParams} = navigation;
+        const isInfo = state.params.mode === 'info';
+        const {user} = state.params;
+        return {
+            title: isInfo ? `${user}'s Contact Info` : `Chat with ${state.params.user}`,
+            headerRight: (
+                <Button
+                    title={isInfo ? 'Done' : `${user}'s info`}
+                    onPress={() => setParams({mode: isInfo ? 'none' : 'info'})}
+                />
+            ),
+        };
+    }
+    // static navigationOptions = {
+    //     title: 'Chat with Lucy',
+    // };
 
     render() {
-        return (
-            <View>
-                <Text>Chat with Lucy</Text>
-            </View>
-        );
+        const { params } = this.props.navigation.state;
+        return <Text>Chat with {params.user}</Text>
+
     }
 }
 
